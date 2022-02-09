@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext "Server=EPUALVIW044E;Database=Quiz_App;Trusted_Connection=True" Microsoft.EntityFrameworkCore.SqlServer -Project Quiz.Core -OutputDir Entities/Quiz_App -ContextDir Data -Context "QuizContext" -StartupProject Quiz.Infrastructure
