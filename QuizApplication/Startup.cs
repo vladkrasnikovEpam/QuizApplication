@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quiz.Core.Data;
+using Quiz.Domain.Services;
+using Quiz.Infrastructure.Repositories;
 
 namespace QuizApplication
 {
@@ -24,6 +26,10 @@ namespace QuizApplication
         {
             services.AddDbContext<QuizContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("QuizConnection")));
+
+            services.AddTransient<QuizService>();
+            services.AddTransient<QuizRepository>();
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

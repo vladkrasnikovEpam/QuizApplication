@@ -8,3 +8,8 @@ C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\
 C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.csproj.CoreCompileInputs.cache
 C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.dll
 C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.pdb
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\bin\Debug\netcoreapp3.1\Quiz.Core.dll
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\bin\Debug\netcoreapp3.1\Quiz.Infrastructure.dll
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\bin\Debug\netcoreapp3.1\Quiz.Infrastructure.pdb
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\bin\Debug\netcoreapp3.1\Quiz.Core.pdb
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.csproj.CopyComplete
