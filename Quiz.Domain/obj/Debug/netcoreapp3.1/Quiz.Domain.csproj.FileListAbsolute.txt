@@ -1,0 +1,10 @@
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\bin\Debug\netcoreapp3.1\Quiz.Domain.deps.json
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\bin\Debug\netcoreapp3.1\Quiz.Domain.dll
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\bin\Debug\netcoreapp3.1\Quiz.Domain.pdb
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.csproj.AssemblyReference.cache
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.AssemblyInfoInputs.cache
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.AssemblyInfo.cs
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.dll
+C:\Users\Vladyslav_Krasnikov\source\repos\QuizApplication\Quiz.Domain\obj\Debug\netcoreapp3.1\Quiz.Domain.pdb
