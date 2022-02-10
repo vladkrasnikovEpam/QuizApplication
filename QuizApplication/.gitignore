@@ -11,10 +11,11 @@
 *.userprefs
 
 .vs
-**/bin
-**/obj
-**/configuration
-**/output
+*.bin
+*.obj
+*.configuration
+*.output
+*.clientapp
 
 # Build results
 [Dd]ebug/
