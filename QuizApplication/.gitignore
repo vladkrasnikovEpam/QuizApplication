@@ -29,6 +29,8 @@ bin/
 Bin/
 obj/
 Obj/
+clientapp/
+ClientApp/
 
 # Visual Studio 2015 cache/options directory
 .vs/
