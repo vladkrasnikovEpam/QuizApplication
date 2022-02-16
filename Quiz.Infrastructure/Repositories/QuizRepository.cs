@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quiz.Core.Data;
 using Quiz.Core.Entities.Quiz_App;
+using Quiz.Core.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Quiz.Infrastructure.Repositories
 {
-    public class QuizRepository
+    public class QuizRepository : IQuizRepository
     {
         private readonly QuizContext context;
         public QuizRepository(QuizContext context)

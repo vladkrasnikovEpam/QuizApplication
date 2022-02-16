@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Quiz.Domain.Contracts.IServices;
 using Quiz.Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -12,17 +14,18 @@ namespace QuizApplication.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        private readonly QuizService service;
-        public HomeController(QuizService service)
+        private readonly IQuizService service;
+        public HomeController(IQuizService service)
         {
             this.service = service;
         }
-        
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            await service.GetAll();
-            return Ok();
+
+            //return Ok($"Ваш логин: {User.Identity.Name}");
+            return Ok(await service.GetAllAsync());
         }
 
         [HttpPost]
