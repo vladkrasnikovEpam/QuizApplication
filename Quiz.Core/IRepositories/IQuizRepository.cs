@@ -10,6 +10,5 @@ namespace Quiz.Core.IRepositories
     {
         void CreateRecord();
         Task<IEnumerable<Topic>> GetAlltopics();
-        //Task<IEnumerable<Topic>> d();
     }
 }
