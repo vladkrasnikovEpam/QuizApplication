@@ -51,9 +51,8 @@ namespace QuizApplication
             })
             .CreateMapper()
             );
-            //services.Configure<AuthOptions>(Configuration.GetSection("AuthOptions"));
 
-            //var authOptions = Configuration.GetSection("AuthOptions").Get<AuthOptions>();
+            var authOptions = Configuration.GetSection("AuthOptions").Get<AuthOptions>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -61,21 +60,12 @@ namespace QuizApplication
                         options.RequireHttpsMetadata = false;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            // укзывает, будет ли валидироваться издатель при валидации токена
                             ValidateIssuer = true,
-                            // строка, представляющая издателя
-                            ValidIssuer = AuthOptions.ISSUER,
-
-                            // будет ли валидироваться потребитель токена
+                            ValidIssuer = authOptions.ISSUER,
                             ValidateAudience = true,
-                            // установка потребителя токена
-                            ValidAudience = AuthOptions.AUDIENCE,
-                            // будет ли валидироваться время существования
+                            ValidAudience = authOptions.AUDIENCE,
                             ValidateLifetime = true,
-
-                            // установка ключа безопасности
-                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                            // валидация ключа безопасности
+                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(authOptions.KEY),
                             ValidateIssuerSigningKey = true,
                         };
                     });

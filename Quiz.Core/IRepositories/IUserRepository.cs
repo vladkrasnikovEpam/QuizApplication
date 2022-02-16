@@ -8,7 +8,6 @@ namespace Quiz.Core.IRepositories
 {
     public interface IUserRepository
     {
-
         Task<User> GetUser(string username, string password);
         Task<IEnumerable<User>> GetAllUsersAsync();
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Quiz.Core.Entities.Quiz_App;
 using Quiz.Domain.Contracts.IServices;
@@ -21,24 +22,20 @@ namespace QuizApplication.Controllers
     {
         private readonly IUserService userService;
         private readonly IMapper mapper;
-        public AccountController(IUserService userService, IMapper mapper)
+        private readonly IConfiguration configuration;
+        public AccountController(IUserService userService, IMapper mapper, IConfiguration configuration)
         {
             this.userService = userService;
             this.mapper = mapper;
+            this.configuration = configuration;
         }
-        // тестовые данные вместо использования базы данных
-        private List<User> people = new List<User>
-        {
-            new User { Email="vladyslav_krasnikov@epam.com", Password="fakepass"},
-            new User { Email="qwerty@gmail.com", Password="55555"}
-        };
 
         [HttpPost("token")]
         public IActionResult Token(string username, string password)
         {
             ClaimsIdentity identity;
             var person = GetIdentity(username, password);
-            if (person != null)
+            if (person.Result != null)
             {
                 var claims = new List<Claim>
                 {
@@ -48,29 +45,27 @@ namespace QuizApplication.Controllers
                 identity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
                     ClaimsIdentity.DefaultRoleClaimType);
-                //    return claimsIdentity;
             }
             else
             {
-                return null;
+                throw new SecurityTokenException();
             }
-
-            //if user not found
 
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
             }
 
+            var authOptions = configuration.GetSection("AuthOptions").Get<AuthOptions>();
             var now = DateTime.UtcNow;
             // create JWT-token
             var jwt = new JwtSecurityToken(
-                    issuer: AuthOptions.ISSUER,
-                    audience: AuthOptions.AUDIENCE,
+                    issuer: authOptions.ISSUER,
+                    audience: authOptions.AUDIENCE,
                     notBefore: now,
                     claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                    expires: now.Add(TimeSpan.FromMinutes(authOptions.LIFETIME)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(authOptions.KEY), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             var response = new
@@ -84,7 +79,6 @@ namespace QuizApplication.Controllers
 
         private async Task<UserModel> GetIdentity(string username, string password)
         {
-            //User person = people.FirstOrDefault(x => x.Email == username && x.Password == password);
             var users = await userService.GetAllAsync();
             UserModel person = users.FirstOrDefault(x => x.Username == username && x.Password == password);
             return person;

@@ -23,8 +23,6 @@ namespace QuizApplication.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-
-            //return Ok($"Ваш логин: {User.Identity.Name}");
             return Ok(await service.GetAllAsync());
         }
 
