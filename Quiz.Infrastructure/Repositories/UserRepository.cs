@@ -16,17 +16,10 @@ namespace Quiz.Infrastructure.Repositories
         {
             this.context = context;
         }
-
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await context.User.ToListAsync();
         }
-
-        //public Task<IEnumerable<User>> GetAllUsers()
-        //{
-        //    this.context.User.FirstOrDefaultAsync();
-        //}
-
         public async Task<User> GetUser(string username, string password)
         {
             return await this.context.User.FirstOrDefaultAsync(x => x.Email.Equals(username) || x.Password == password);
