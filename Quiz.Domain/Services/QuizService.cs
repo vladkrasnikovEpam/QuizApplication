@@ -1,4 +1,8 @@
-﻿using Quiz.Infrastructure.Repositories;
+﻿using AutoMapper;
+using Quiz.Core.IUoWs;
+using Quiz.Domain.Contracts.IServices;
+using Quiz.Domain.Models;
+using Quiz.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,22 +10,24 @@ using System.Threading.Tasks;
 
 namespace Quiz.Domain.Services
 {
-    public class QuizService
+    public class QuizService : IQuizService
     {
-        private readonly QuizRepository quizRepository;
-        public QuizService(QuizRepository repository)
+        private readonly IQAUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
+        public QuizService(IQAUnitOfWork unitOfWork, IMapper mapper)
         {
-            this.quizRepository = repository;
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
-        public async Task<int> GetAll()
+        public async Task<List<TopicModel>> GetAllAsync()
         {
-            var s = await this.quizRepository.GetAlltopics();
-            return 1;
+            var list = await this.unitOfWork.QuizRepository.GetAlltopics();
+            return mapper.Map<List<TopicModel>>(list);
         }
         public async Task<int> CreateRecord()
         {
-            this.quizRepository.CreateRecord();
+            this.unitOfWork.QuizRepository.CreateRecord();
             return 1;
         }
     }
