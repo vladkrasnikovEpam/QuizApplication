@@ -26,6 +26,13 @@ namespace QuizApplication.Controllers
             return Ok(await service.GetAllAsync());
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin")]
+        public async Task<ActionResult> GetRoleAdmin()
+        {
+            return Ok("Ваша роль: администратор");
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateTopic()
         {

@@ -12,7 +12,8 @@ namespace Quiz.Domain.Mappers
         public UserMapper()
         {
             CreateMap<User, UserModel>()
-                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Email));
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.Name))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Login));
         }
     }
 }

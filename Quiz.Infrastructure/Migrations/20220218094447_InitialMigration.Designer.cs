@@ -9,7 +9,7 @@ using Quiz.Core.Data;
 namespace Quiz.Infrastructure.Migrations
 {
     [DbContext(typeof(QuizContext))]
-    [Migration("20220209073707_InitialMigration")]
+    [Migration("20220218094447_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace Quiz.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Answer1")
+                    b.Property<string>("AnswerName")
                         .IsRequired()
                         .HasColumnName("Answer")
                         .HasColumnType("nvarchar(max)");
@@ -51,7 +51,7 @@ namespace Quiz.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Question1")
+                    b.Property<string>("QuestionName")
                         .HasColumnName("Question")
                         .HasColumnType("nvarchar(max)");
 
@@ -63,6 +63,24 @@ namespace Quiz.Infrastructure.Migrations
                     b.HasIndex("TopicId");
 
                     b.ToTable("Question");
+                });
+
+            modelBuilder.Entity("Quiz.Core.Entities.Quiz_App.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("Quiz.Core.Entities.Quiz_App.Topic", b =>
@@ -89,28 +107,27 @@ namespace Quiz.Infrastructure.Migrations
             modelBuilder.Entity("Quiz.Core.Entities.Quiz_App.User", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("id")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Login")
                         .IsRequired()
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("NickName")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("User");
                 });
@@ -130,6 +147,15 @@ namespace Quiz.Infrastructure.Migrations
                         .WithMany("Question")
                         .HasForeignKey("TopicId")
                         .HasConstraintName("FK_Question_Topic")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Quiz.Core.Entities.Quiz_App.User", b =>
+                {
+                    b.HasOne("Quiz.Core.Entities.Quiz_App.Role", "Role")
+                        .WithMany("User")
+                        .HasForeignKey("RoleId")
+                        .HasConstraintName("FK_User_Role")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -22,7 +22,9 @@ namespace Quiz.Infrastructure.Repositories
         }
         public async Task<User> GetUser(string username, string password)
         {
-            return await context.User.FirstOrDefaultAsync(x => x.Email.Equals(username) || x.Password == password);
+            return await context.User
+                .Include(x => x.Role)
+                .FirstOrDefaultAsync(x => x.Login.Equals(username) || x.Password == password);
         }
     }
 }
