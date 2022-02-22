@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 using Quiz.Core.Entities.Quiz_App;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
@@ -36,7 +39,7 @@ namespace Quiz.Core.Data
             {
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Answer1)
+                entity.Property(e => e.AnswerName)
                     .IsRequired()
                     .HasColumnName("Answer");
 
@@ -51,7 +54,7 @@ namespace Quiz.Core.Data
             {
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Question1).HasColumnName("Question");
+                entity.Property(e => e.QuestionName).HasColumnName("Question");
 
                 entity.HasOne(d => d.Topic)
                     .WithMany(p => p.Question)
@@ -72,20 +75,30 @@ namespace Quiz.Core.Data
             modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .ValueGeneratedNever();
+                    .HasColumnName("id");
 
-                entity.Property(e => e.Email)
+                entity.Property(e => e.Login)
                     .IsRequired()
                     .HasMaxLength(500);
-
-                entity.Property(e => e.Name).HasMaxLength(250);
-
-                entity.Property(e => e.NickName).HasMaxLength(250);
 
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(250);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.User)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_Role");
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(500);
             });
 
             OnModelCreatingPartial(modelBuilder);

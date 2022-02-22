@@ -7,6 +7,19 @@ namespace Quiz.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Role",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Topic",
                 columns: table => new
                 {
@@ -24,15 +37,21 @@ namespace Quiz.Infrastructure.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: true),
-                    NickName = table.Column<string>(maxLength: 250, nullable: true),
-                    Email = table.Column<string>(maxLength: 500, nullable: false),
-                    Password = table.Column<string>(maxLength: 250, nullable: false)
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Login = table.Column<string>(maxLength: 500, nullable: false),
+                    Password = table.Column<string>(maxLength: 250, nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_User_Role",
+                        column: x => x.RoleId,
+                        principalTable: "Role",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,6 +103,11 @@ namespace Quiz.Infrastructure.Migrations
                 name: "IX_Question_TopicId",
                 table: "Question",
                 column: "TopicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_RoleId",
+                table: "User",
+                column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -96,6 +120,9 @@ namespace Quiz.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Question");
+
+            migrationBuilder.DropTable(
+                name: "Role");
 
             migrationBuilder.DropTable(
                 name: "Topic");

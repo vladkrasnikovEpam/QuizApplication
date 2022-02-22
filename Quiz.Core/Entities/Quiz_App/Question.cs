@@ -16,7 +16,7 @@ namespace Quiz.Core.Entities.Quiz_App
 
         public int Id { get; set; }
         public int TopicId { get; set; }
-        public string Question1 { get; set; }
+        public string QuestionName { get; set; }
 
         public virtual Topic Topic { get; set; }
         public virtual ICollection<Answer> Answer { get; set; }
