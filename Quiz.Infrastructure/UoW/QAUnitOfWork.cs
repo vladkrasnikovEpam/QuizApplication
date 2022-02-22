@@ -12,14 +12,20 @@ namespace Quiz.Infrastructure.UoW
     {
         private readonly QuizContext context;
         public IUserRepository UserRepository { get; private set; }
-        public IQuizRepository QuizRepository { get; private set; }
+        public ITopicRepository TopicRepository { get; private set; }
+        public IQuestionRepository QuestionRepository { get; private set; }
+        public IAnswerRepository AnswerRepository { get; private set; }
         public QAUnitOfWork(QuizContext context,
             IUserRepository userRepository,
-            IQuizRepository quizRepository)
+            ITopicRepository topicRepository,
+            IQuestionRepository questionRepository,
+            IAnswerRepository answerRepository)
         {
             this.context = context;
             UserRepository = userRepository;
-            QuizRepository = quizRepository;
+            TopicRepository = topicRepository;
+            QuestionRepository = questionRepository;
+            AnswerRepository = answerRepository;
         }
         public async Task SaveAsync()
         {
