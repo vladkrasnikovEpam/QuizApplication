@@ -49,7 +49,6 @@ namespace Quiz.Infrastructure.Repositories
 
         public async Task<int> GetTopicId(Topic entity)
         {
-            //return context.Topic.FirstOrDefaultAsync(x => x.Name.Equals(entity.Name) && x.Description == entity.Description).Id;
             return await context.Topic.Where(x => x.Name.Equals(entity.Name) && x.Description == entity.Description).Select( x => x.Id).FirstOrDefaultAsync();
         }
     }

@@ -10,6 +10,7 @@ namespace Quiz.Domain.Models
         public int Id { get; set; }
         public int QuestionId { get; set; }
         public string AnswerName { get; set; }
+        public bool Correct { get; set; }
 
         public string Question { get; set; }
     }

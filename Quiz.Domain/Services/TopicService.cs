@@ -5,6 +5,7 @@ using Quiz.Domain.Constants;
 using Quiz.Domain.Contracts.IServices;
 using Quiz.Domain.Models;
 using Quiz.Domain.Parameters;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,21 +30,33 @@ namespace Quiz.Domain.Services
         public async Task<int> Create(TopicParameters param)
         {
             var topic = mapper.Map<Topic>(param);
-            unitOfWork.TopicRepository.Create(topic);
-            var topicId = await unitOfWork.TopicRepository.GetTopicId(topic);
-            foreach (var question in param.Question)
+            try
             {
-                question.TopicId = topicId;
-                var questionEntity = mapper.Map<Question>(question);
-                unitOfWork.QuestionRepository.Create(questionEntity);
-                var questionId = await unitOfWork.QuestionRepository.GetQuestionId(questionEntity);
-                foreach (var answer in question.Answer)
+                unitOfWork.TopicRepository.Create(topic);
+                await unitOfWork.SaveAsync();
+                foreach (var question in param.Question)
                 {
-                    var mappedAnswer = mapper.Map<Answer>(answer);
-                    unitOfWork.AnswerRepository.Create(mappedAnswer);
+                    question.TopicId = topic.Id;
+                    var questionEntity = mapper.Map<Question>(question);
+                    unitOfWork.QuestionRepository.Create(questionEntity);
+                    await unitOfWork.SaveAsync();
+                    foreach (var answer in question.Answer)
+                    {
+                        answer.QuestionId = questionEntity.Id;
+                        var mappedAnswer = mapper.Map<Answer>(answer);
+                        unitOfWork.AnswerRepository.Create(mappedAnswer);
+                    }
                 }
+                await unitOfWork.SaveAsync();
             }
-            await unitOfWork.SaveAsync();
+            catch(AggregateException ex)
+            {
+                foreach(var e in ex.InnerExceptions)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return 0;
+            }
             return 1;
         }
 
@@ -65,14 +78,13 @@ namespace Quiz.Domain.Services
             TopicPaginationModel model = new TopicPaginationModel();
             PaginationModel paginationModel = new PaginationModel();
             if (pageId < 0) throw new KeyNotFoundException();
-            StringBuilder s = new StringBuilder(QuizConstants.TopicPageUrl);
-            paginationModel.Next = s.Append(pageId + 1).ToString();
-            paginationModel.Previous = s.Append(pageId - 1).ToString();
+            paginationModel.Next = QuizConstants.TopicPageUrl + (pageId + 1);
+            paginationModel.Previous = QuizConstants.TopicPageUrl + (pageId - 1);
             var startIndex = (pageId - 1) * QuizConstants.NumberOfTopicsPerPage;
             var topicsList = await unitOfWork.TopicRepository.GetRangeOfTopics(startIndex, QuizConstants.NumberOfTopicsPerPage);
             model.Topic = mapper.Map<List<TopicModel>>(topicsList);
+            model.Pagination = paginationModel;
             return model;
-
         }
     }
 }

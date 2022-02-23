@@ -12,6 +12,7 @@ namespace Quiz.Core.Entities.Quiz_App
         public int Id { get; set; }
         public int QuestionId { get; set; }
         public string AnswerName { get; set; }
+        public bool Correct { get; set; }
 
         public virtual Question Question { get; set; }
     }

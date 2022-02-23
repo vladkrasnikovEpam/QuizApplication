@@ -28,7 +28,7 @@ namespace QuizApplication.Controllers
             return Ok(await service.GetAllAsync());
         }
         [Authorize]
-        [HttpGet("page/{id}")]
+        [HttpGet("page/{pageId}")]
         public async Task<ActionResult<TopicPaginationModel>> GetAllWithPagination(int pageId)
         {
             return Ok(await service.GetAllWithPaginationAsync(pageId));
@@ -43,10 +43,24 @@ namespace QuizApplication.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<int>> Create([FromBody] TopicParameters param)
+        public async Task<ActionResult<int>> Create(/*[FromBody] TopicParameters param*/)
         {
-
-            return Ok(await service.Create(param));
+            TopicParameters topic = new TopicParameters();
+            topic.Name = "Cars";
+            topic.Description = "Find out if you are aware of cars";
+            QuestionModel question = new QuestionModel();
+            question.QuestionName = "What is under the hood?";
+            AnswerModel answerA = new AnswerModel();
+            AnswerModel answerB = new AnswerModel();
+            answerA.AnswerName = "Engine";
+            answerB.AnswerName = "Seats";
+            answerA.Correct = true;
+            answerB.Correct = false;
+            List<AnswerModel> listA = new List<AnswerModel> { answerA, answerB };
+            question.Answer = listA;
+            List<QuestionModel> list = new List<QuestionModel> { question };
+            topic.Question = list;
+            return Ok(await service.Create(topic));
         }
 
         [Authorize(Roles = "Admin")]
