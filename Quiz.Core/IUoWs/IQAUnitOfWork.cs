@@ -5,9 +5,11 @@ using System.Text;
 
 namespace Quiz.Core.IUoWs
 {
-    public interface IQAUnitOfWork
+    public interface IQAUnitOfWork : IUnitOfWork
     {
         IUserRepository UserRepository { get; }
-        IQuizRepository QuizRepository { get; }
+        ITopicRepository TopicRepository { get; }
+        IQuestionRepository QuestionRepository { get; }
+        IAnswerRepository AnswerRepository { get; }
     }
 }

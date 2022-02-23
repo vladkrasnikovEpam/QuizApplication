@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +17,6 @@ using Quiz.Domain.Models.Authorization;
 using Quiz.Domain.Services;
 using Quiz.Infrastructure.Repositories;
 using Quiz.Infrastructure.UoW;
-using System.Text;
 
 namespace QuizApplication
 {
@@ -38,17 +35,21 @@ namespace QuizApplication
             services.AddDbContext<QuizContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("QuizConnection")));
             services.AddSingleton<HttpContextAccessor>();
-            services.AddTransient<IQuizService, QuizService>();
+            services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<IUserService, UserService>();
 
-            services.AddTransient<IQuizRepository, QuizRepository>();
+            services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IAnswerRepository, AnswerRepository>();
+            services.AddTransient<IQuestionRepository, QuestionRepository>();
             services.AddTransient<IQAUnitOfWork, QAUnitOfWork>();
 
             services.AddSingleton(provider => new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new UserMapper());
                 mc.AddProfile(new TopicMapper());
+                mc.AddProfile(new QuestionMapper());
+                mc.AddProfile(new AnswerMapper());
             })
             .CreateMapper()
             );
