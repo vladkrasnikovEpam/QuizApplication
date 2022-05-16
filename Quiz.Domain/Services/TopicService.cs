@@ -21,6 +21,7 @@ namespace Quiz.Domain.Services
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
+        //public TopicService() { }
 
         public async Task<List<TopicModel>> GetAllAsync()
         {

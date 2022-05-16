@@ -21,7 +21,7 @@ namespace QuizApplication.Controllers
             this.service = service;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<List<TopicModel>>> GetAll()
         {
