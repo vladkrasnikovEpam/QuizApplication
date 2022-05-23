@@ -27,6 +27,7 @@ namespace QuizApplication.Controllers
         {
             return Ok(await service.GetAllAsync());
         }
+
         [Authorize]
         [HttpGet("page/{pageId}")]
         public async Task<ActionResult<TopicPaginationModel>> GetAllWithPagination(int pageId)

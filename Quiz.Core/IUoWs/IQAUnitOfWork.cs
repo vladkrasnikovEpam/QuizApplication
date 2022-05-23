@@ -11,5 +11,6 @@ namespace Quiz.Core.IUoWs
         ITopicRepository TopicRepository { get; }
         IQuestionRepository QuestionRepository { get; }
         IAnswerRepository AnswerRepository { get; }
+        IStatisticRepository StatisticRepository { get; }
     }
 }

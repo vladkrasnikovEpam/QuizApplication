@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,11 +38,13 @@ namespace QuizApplication
             services.AddSingleton<HttpContextAccessor>();
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IStatisticService, StatisticService>();
 
             services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAnswerRepository, AnswerRepository>();
             services.AddTransient<IQuestionRepository, QuestionRepository>();
+            services.AddTransient<IStatisticRepository, StatisticRepository>();
             services.AddTransient<IQAUnitOfWork, QAUnitOfWork>();
 
             services.AddSingleton(provider => new MapperConfiguration(mc =>
@@ -50,6 +53,7 @@ namespace QuizApplication
                 mc.AddProfile(new TopicMapper());
                 mc.AddProfile(new QuestionMapper());
                 mc.AddProfile(new AnswerMapper());
+                mc.AddProfile(new StatisticMapper());
             })
             .CreateMapper()
             );
@@ -73,10 +77,11 @@ namespace QuizApplication
                     });
 
             services.AddControllers();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = "ClientApp/dist/client-app";
             });
         }
 

@@ -15,17 +15,20 @@ namespace Quiz.Infrastructure.UoW
         public ITopicRepository TopicRepository { get; private set; }
         public IQuestionRepository QuestionRepository { get; private set; }
         public IAnswerRepository AnswerRepository { get; private set; }
+        public IStatisticRepository StatisticRepository { get; private set; }
         public QAUnitOfWork(QuizContext context,
             IUserRepository userRepository,
             ITopicRepository topicRepository,
             IQuestionRepository questionRepository,
-            IAnswerRepository answerRepository)
+            IAnswerRepository answerRepository,
+            IStatisticRepository statisticRepository)
         {
             this.context = context;
             UserRepository = userRepository;
             TopicRepository = topicRepository;
             QuestionRepository = questionRepository;
             AnswerRepository = answerRepository;
+            StatisticRepository = statisticRepository;
         }
         public async Task SaveAsync()
         {
