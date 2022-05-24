@@ -70,8 +70,8 @@ namespace Quiz.Domain.Services
         {
             var topic = await unitOfWork.TopicRepository.GetTopicById(id);
             if (topic == null) throw new KeyNotFoundException();
-            unitOfWork.TopicRepository.Delete(topic);
-            await unitOfWork.SaveAsync();
+            //unitOfWork.TopicRepository.Delete(topic);
+            //await unitOfWork.SaveAsync();
         }
 
         public async Task<TopicPaginationModel> GetAllWithPaginationAsync(int pageId)

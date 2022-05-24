@@ -64,8 +64,8 @@ namespace QuizApplication.Controllers
             return Ok(await service.Create(topic));
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpDelete]
+        //[Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             await service.DeleteAsync(id);

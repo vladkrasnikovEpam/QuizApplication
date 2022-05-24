@@ -77,6 +77,7 @@ namespace QuizApplication
                     });
 
             services.AddControllers();
+            services.AddSwaggerGen();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -92,7 +93,12 @@ namespace QuizApplication
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V2");
+                });
             }
             else
             {
@@ -131,10 +137,11 @@ namespace QuizApplication
 
             //app.UseSpa(spa =>
             //{
-            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            //    // see https://go.microsoft.com/fwlink/?linkid=864501
+            //    To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //    see https://go.microsoft.com/fwlink/?linkid=864501
 
-            //    spa.Options.SourcePath = "ClientApp";
+
+            //   spa.Options.SourcePath = "ClientApp";
 
             //    if (env.IsDevelopment())
             //    {

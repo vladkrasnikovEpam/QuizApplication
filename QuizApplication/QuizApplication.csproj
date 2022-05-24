@@ -15,7 +15,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin\Debug\netcoreapp3.1</OutputPath>
     <DocumentationFile>bin\Debug\netcoreapp3.1\QuizApplication.xml</DocumentationFile>
-    <WarningLevel>5</WarningLevel>
+    <WarningLevel>3</WarningLevel>
+    <NoWarn>1701;1702; 1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

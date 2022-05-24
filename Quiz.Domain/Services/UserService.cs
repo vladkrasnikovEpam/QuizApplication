@@ -2,6 +2,7 @@
 using Quiz.Core.IUoWs;
 using Quiz.Domain.Contracts.IServices;
 using Quiz.Domain.Models;
+using Quiz.Domain.Models.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,9 +25,9 @@ namespace Quiz.Domain.Services
             var list = await unitOfWork.UserRepository.GetAllUsersAsync();
             return mapper.Map<List<UserModel>>(list);
         }
-        public async Task<UserModel> GetUser(string username, string password)
+        public async Task<UserModel> GetUser(LoginModel login)
         {
-            var user = await unitOfWork.UserRepository.GetUser(username, password);
+            var user = await unitOfWork.UserRepository.GetUser(login.Email, login.Password);
             return mapper.Map<UserModel>(user);
         }
 
