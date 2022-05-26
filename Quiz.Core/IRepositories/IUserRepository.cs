@@ -10,5 +10,6 @@ namespace Quiz.Core.IRepositories
     {
         Task<User> GetUser(string email, string password);
         Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<User> Create(User model);
     }
 }

@@ -16,6 +16,13 @@ namespace Quiz.Infrastructure.Repositories
         {
             this.context = context;
         }
+
+        public async Task<User> Create(User model)
+        {
+            var user = await context.User.AddAsync(model);
+            return user.Entity;
+        }
+
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await context.User.ToListAsync();

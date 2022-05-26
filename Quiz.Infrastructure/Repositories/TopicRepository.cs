@@ -42,14 +42,22 @@ namespace Quiz.Infrastructure.Repositories
             return await context.Topic.Skip(skipRows).Take(amount).ToListAsync();
         }
 
-        public async Task<Topic> GetTopicById(int id)
+        public async Task<Topic> Get(int id)
         {
-            return await context.Topic.FirstOrDefaultAsync(x => x.Id == id);
+            return await context.Topic
+                .Include(x => x.Question)
+                .ThenInclude(x => x.Answer)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<int> GetTopicId(Topic entity)
         {
             return await context.Topic.Where(x => x.Name.Equals(entity.Name) && x.Description == entity.Description).Select( x => x.Id).FirstOrDefaultAsync();
+        }
+
+        public void Update(Topic entity)
+        {
+            context.Entry(entity).State = EntityState.Modified;
         }
     }
 }

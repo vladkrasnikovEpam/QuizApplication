@@ -27,6 +27,13 @@ namespace QuizApplication.Controllers
         {
             return Ok(await service.GetAllAsync());
         }
+        
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<TopicModel>>> GetById(int id)
+        {
+            var topic = await service.Get(id);
+            return Ok(topic);
+        }
 
         [Authorize]
         [HttpGet("page/{pageId}")]
@@ -42,26 +49,17 @@ namespace QuizApplication.Controllers
             return Ok(await service.GetAmountAsync());
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<int>> Create(/*[FromBody] TopicParameters param*/)
+        public async Task<ActionResult<int>> Create([FromBody] TopicParameters model)
         {
-            TopicParameters topic = new TopicParameters();
-            topic.Name = "Cars";
-            topic.Description = "Find out if you are aware of cars";
-            QuestionModel question = new QuestionModel();
-            question.QuestionName = "What is under the hood?";
-            AnswerModel answerA = new AnswerModel();
-            AnswerModel answerB = new AnswerModel();
-            answerA.AnswerName = "Engine";
-            answerB.AnswerName = "Seats";
-            answerA.Correct = true;
-            answerB.Correct = false;
-            List<AnswerModel> listA = new List<AnswerModel> { answerA, answerB };
-            question.Answer = listA;
-            List<QuestionModel> list = new List<QuestionModel> { question };
-            topic.Question = list;
-            return Ok(await service.Create(topic));
+            return Ok(await service.Create(model));
+        }
+        
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] TopicParameters model)
+        {
+            return Ok(await service.Update(model));
         }
 
         //[Authorize(Roles = "Admin")]

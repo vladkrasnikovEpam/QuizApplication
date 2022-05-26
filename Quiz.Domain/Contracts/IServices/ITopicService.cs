@@ -10,9 +10,11 @@ namespace Quiz.Domain.Contracts.IServices
     public interface ITopicService
     {
         Task<List<TopicModel>> GetAllAsync();
+        Task<TopicModel> Get(int id);
         Task<TopicPaginationModel> GetAllWithPaginationAsync(int pageId);
         Task<int> GetAmountAsync();
-        Task<int> Create(TopicParameters param);
+        Task<TopicModel> Create(TopicParameters param);
+        Task<TopicModel> Update(TopicParameters param);
         Task DeleteAsync(int id);
     }
 }

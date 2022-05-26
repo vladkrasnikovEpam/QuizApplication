@@ -10,10 +10,11 @@ namespace Quiz.Core.IRepositories
     {
         void Create(Topic entity);
         void Delete(Topic entity);
+        void Update(Topic entity);
         Task<IEnumerable<Topic>> GetAlltopics();
         Task<IEnumerable<Topic>> GetRangeOfTopics(int skipRows, int amount);
         Task<int> GetTopicId(Topic entity);
         Task<int> GetAmount();
-        Task<Topic> GetTopicById(int id);
+        Task<Topic> Get(int id);
     }
 }

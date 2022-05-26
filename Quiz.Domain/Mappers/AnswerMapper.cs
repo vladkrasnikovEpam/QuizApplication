@@ -12,6 +12,7 @@ namespace Quiz.Domain.Mappers
         public AnswerMapper()
         {
             CreateMap<AnswerModel, Answer>();
+            CreateMap<Answer, AnswerModel>();
         }
     }
 }

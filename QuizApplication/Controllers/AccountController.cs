@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Quiz.Domain.Contracts.IServices;
+using Quiz.Domain.Exceptions;
+using Quiz.Domain.Models;
 using Quiz.Domain.Models.Authorization;
 using System;
 using System.Collections.Generic;
@@ -71,6 +73,16 @@ namespace QuizApplication.Controllers
             }
 
             return Unauthorized();
+        }
+
+        [HttpPost]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserModel))]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ExceptionResponse))]
+        public async Task<ActionResult> Create(LoginModel login)
+        {
+            var account = await userService.Create(login);
+            return Ok(account);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,11 +14,13 @@ using Quiz.Core.Data;
 using Quiz.Core.IRepositories;
 using Quiz.Core.IUoWs;
 using Quiz.Domain.Contracts.IServices;
+using Quiz.Domain.Helpers.Validators;
 using Quiz.Domain.Mappers;
 using Quiz.Domain.Models.Authorization;
 using Quiz.Domain.Services;
 using Quiz.Infrastructure.Repositories;
 using Quiz.Infrastructure.UoW;
+using System.Reflection;
 
 namespace QuizApplication
 {
@@ -33,6 +36,14 @@ namespace QuizApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AllowOrigin",
+                    builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
+            });
+
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginModelValidator>());
+            
             services.AddDbContext<QuizContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("QuizConnection")));
             services.AddSingleton<HttpContextAccessor>();
@@ -58,6 +69,8 @@ namespace QuizApplication
             .CreateMapper()
             );
 
+            services.AddSwaggerGen();
+
             var authOptions = Configuration.GetSection("AuthOptions").Get<AuthOptions>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -76,20 +89,18 @@ namespace QuizApplication
                         };
                     });
 
-            services.AddControllers();
-            services.AddSwaggerGen();
-
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist/client-app";
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
+            app.UseCors("AllowOrigin");
 
             if (env.IsDevelopment())
             {
@@ -107,11 +118,6 @@ namespace QuizApplication
                 app.UseHsts();
             }
 
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
@@ -120,6 +126,14 @@ namespace QuizApplication
             }
 
             app.UseRouting();
+
+            //app.UseCors(builder =>
+            //{
+            //    builder
+            //    .AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader();
+            //});
 
             // Code omitted for brevity
 
