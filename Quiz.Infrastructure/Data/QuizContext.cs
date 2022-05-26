@@ -27,6 +27,7 @@ namespace Quiz.Core.Data
         public virtual DbSet<Question> Question { get; set; }
         public virtual DbSet<Topic> Topic { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Statistic> Statistic { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -99,6 +100,11 @@ namespace Quiz.Core.Data
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(500);
+            });
+            
+            modelBuilder.Entity<Statistic>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
             });
 
             OnModelCreatingPartial(modelBuilder);

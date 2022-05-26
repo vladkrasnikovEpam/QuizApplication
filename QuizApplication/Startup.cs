@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,12 +14,13 @@ using Quiz.Core.Data;
 using Quiz.Core.IRepositories;
 using Quiz.Core.IUoWs;
 using Quiz.Domain.Contracts.IServices;
+using Quiz.Domain.Helpers.Validators;
 using Quiz.Domain.Mappers;
 using Quiz.Domain.Models.Authorization;
 using Quiz.Domain.Services;
 using Quiz.Infrastructure.Repositories;
 using Quiz.Infrastructure.UoW;
-using System.Text;
+using System.Reflection;
 
 namespace QuizApplication
 {
@@ -35,23 +36,40 @@ namespace QuizApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AllowOrigin",
+                    builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
+            });
+
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginModelValidator>());
+            
             services.AddDbContext<QuizContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("QuizConnection")));
             services.AddSingleton<HttpContextAccessor>();
-            services.AddTransient<IQuizService, QuizService>();
+            services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IStatisticService, StatisticService>();
 
-            services.AddTransient<IQuizRepository, QuizRepository>();
+            services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IAnswerRepository, AnswerRepository>();
+            services.AddTransient<IQuestionRepository, QuestionRepository>();
+            services.AddTransient<IStatisticRepository, StatisticRepository>();
             services.AddTransient<IQAUnitOfWork, QAUnitOfWork>();
 
             services.AddSingleton(provider => new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new UserMapper());
                 mc.AddProfile(new TopicMapper());
+                mc.AddProfile(new QuestionMapper());
+                mc.AddProfile(new AnswerMapper());
+                mc.AddProfile(new StatisticMapper());
             })
             .CreateMapper()
             );
+
+            services.AddSwaggerGen();
 
             var authOptions = Configuration.GetSection("AuthOptions").Get<AuthOptions>();
 
@@ -71,22 +89,27 @@ namespace QuizApplication
                         };
                     });
 
-            services.AddControllers();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = "ClientApp/dist/client-app";
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
+            app.UseCors("AllowOrigin");
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V2");
+                });
             }
             else
             {
@@ -104,6 +127,14 @@ namespace QuizApplication
 
             app.UseRouting();
 
+            //app.UseCors(builder =>
+            //{
+            //    builder
+            //    .AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader();
+            //});
+
             // Code omitted for brevity
 
             app.UseAuthentication();
@@ -120,10 +151,11 @@ namespace QuizApplication
 
             //app.UseSpa(spa =>
             //{
-            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            //    // see https://go.microsoft.com/fwlink/?linkid=864501
+            //    To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //    see https://go.microsoft.com/fwlink/?linkid=864501
 
-            //    spa.Options.SourcePath = "ClientApp";
+
+            //   spa.Options.SourcePath = "ClientApp";
 
             //    if (env.IsDevelopment())
             //    {

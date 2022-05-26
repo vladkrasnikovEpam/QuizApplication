@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Quiz.Domain.Contracts.IServices
 {
-    public interface IQuizService
+    public interface IStatisticService
     {
-        Task<List<TopicModel>> GetAllAsync();
-        Task<int> CreateRecord();
+        public Task<StatisticModel> Get();
     }
 }

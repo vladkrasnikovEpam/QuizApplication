@@ -31,6 +31,9 @@ namespace Quiz.Infrastructure.Migrations
                         .HasColumnName("Answer")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Correct")
+                        .HasColumnType("bit");
+
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
@@ -79,6 +82,28 @@ namespace Quiz.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("Quiz.Core.Entities.Quiz_App.Statistic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Attemps")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AverageAnswersPercent")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RegisteredUsers")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statistic");
                 });
 
             modelBuilder.Entity("Quiz.Core.Entities.Quiz_App.Topic", b =>

@@ -1,4 +1,5 @@
 ﻿using Quiz.Domain.Models;
+using Quiz.Domain.Models.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace Quiz.Domain.Contracts.IServices
     public interface IUserService
     {
         Task<List<UserModel>> GetAllAsync();
-        Task<UserModel> GetUser(string username, string password);
+        Task<UserModel> GetUser(LoginModel login);
+        Task<UserModel> Create(LoginModel login);
     }
 }

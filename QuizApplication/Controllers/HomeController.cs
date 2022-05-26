@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Quiz.Domain.Contracts.IServices;
+using Quiz.Domain.Parameters;
 using Quiz.Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -14,16 +15,10 @@ namespace QuizApplication.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        private readonly IQuizService service;
-        public HomeController(IQuizService service)
+        private readonly ITopicService service;
+        public HomeController(ITopicService service)
         {
             this.service = service;
-        }
-        [Authorize]
-        [HttpGet]
-        public async Task<ActionResult> GetAll()
-        {
-            return Ok(await service.GetAllAsync());
         }
 
         [Authorize(Roles = "Admin")]
@@ -31,13 +26,6 @@ namespace QuizApplication.Controllers
         public async Task<ActionResult> GetRoleAdmin()
         {
             return Ok("Ваша роль: администратор");
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> CreateTopic()
-        {
-            await service.CreateRecord();
-            return Ok();
         }
     }
 }

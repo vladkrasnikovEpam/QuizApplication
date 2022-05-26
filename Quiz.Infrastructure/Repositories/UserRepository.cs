@@ -16,15 +16,22 @@ namespace Quiz.Infrastructure.Repositories
         {
             this.context = context;
         }
+
+        public async Task<User> Create(User model)
+        {
+            var user = await context.User.AddAsync(model);
+            return user.Entity;
+        }
+
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await context.User.ToListAsync();
         }
-        public async Task<User> GetUser(string username, string password)
+        public async Task<User> GetUser(string email, string password)
         {
             return await context.User
                 .Include(x => x.Role)
-                .FirstOrDefaultAsync(x => x.Login.Equals(username) || x.Password == password);
+                .FirstOrDefaultAsync(x => x.Login.Equals(email) && x.Password == password);
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Quiz.Core.IRepositories
 {
-    public interface IQuizRepository
+    public interface IQuestionRepository
     {
-        void CreateRecord();
-        Task<IEnumerable<Topic>> GetAlltopics();
+        void Create(Question entity);
+        Task<int> GetQuestionId(Question entity);
     }
 }

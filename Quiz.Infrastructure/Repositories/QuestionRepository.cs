@@ -4,29 +4,27 @@ using Quiz.Core.Entities.Quiz_App;
 using Quiz.Core.IRepositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Quiz.Infrastructure.Repositories
 {
-    public class QuizRepository : IQuizRepository
+    public class QuestionRepository : IQuestionRepository
     {
         private readonly QuizContext context;
-        public QuizRepository(QuizContext context)
+        public QuestionRepository(QuizContext context)
         {
             this.context = context;
         }
-        public void CreateRecord()
+        public void Create(Question entity)
         {
-            Topic entity = new Topic();
-            entity.Name = "Sport";
-            entity.Description = "Discover what sport best fits u";
             context.Entry(entity).State = EntityState.Added;
-            context.SaveChanges();
         }
-        public async Task<IEnumerable<Topic>> GetAlltopics()
+
+        public async Task<int> GetQuestionId(Question entity)
         {
-            return await context.Topic.ToListAsync();
+            return await context.Question.Where(x => x.QuestionName.Equals(entity.QuestionName) && x.TopicId == entity.TopicId).Select(x => x.Id).FirstOrDefaultAsync();
         }
     }
 }
